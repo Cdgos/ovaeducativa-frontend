@@ -47,9 +47,12 @@ import { PagesDropdownComponent } from "./components/dropdowns/pages-dropdown/pa
 import { NotificationDropdownComponent } from "./components/dropdowns/notification-dropdown/notification-dropdown.component";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user-dropdown.component";
+import { QuestionComponent } from './views/question/question.component';
+import { ChangeBgDirective } from "./change-bg.directive";
 
 @NgModule({
   declarations: [
+    ChangeBgDirective,
     AppComponent,
     DashboardComponent,
     CardBarChartComponent,
@@ -84,6 +87,7 @@ import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user
     IndexComponent,
     LandingComponent,
     ProfileComponent,
+    QuestionComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
