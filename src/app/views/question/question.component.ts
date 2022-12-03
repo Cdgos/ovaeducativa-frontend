@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { interval } from 'rxjs';
 import { QuestionService } from 'src/app/services/question.service';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss']
+  styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
 
@@ -19,7 +20,13 @@ export class QuestionComponent implements OnInit {
   interval$: any;
   progress: string = "0";
   isQuizCompleted : boolean = false;
-  constructor(private questionService: QuestionService) { }
+  isAnswerCompleted : boolean = false;
+  id:string
+  constructor(private questionService: QuestionService,private aRouter: ActivatedRoute) {
+
+    this.id = aRouter.snapshot.paramMap.get('idTema');
+
+   }
 
   ngOnInit(): void {
     this.name = localStorage.getItem("name")!;
@@ -29,7 +36,7 @@ export class QuestionComponent implements OnInit {
   getAllQuestions() {
     this.questionService.getQuestionJson()
       .subscribe(res => {
-        this.questionList = res.questions;
+        this.questionList = res.themes[this.id].questions;
       })
   }
   nextQuestion() {
@@ -44,25 +51,34 @@ export class QuestionComponent implements OnInit {
       this.isQuizCompleted = true;
       this.stopCounter();
     }
-    if (option.correct) {
-      this.points += 10;
-      this.correctAnswer++;
-      setTimeout(() => {
-        this.currentQuestion++;
-        this.resetCounter();
-        this.getProgressPercent();
-      }, 1000);
 
+    if (option.correct ) {
+      if(!this.isAnswerCompleted){
+        this.points += 10;
+        this.isAnswerCompleted=true
+        this.correctAnswer++;
+        setTimeout(() => {
+          this.currentQuestion++;
+          this.resetCounter();
+          this.getProgressPercent();
+        this.isAnswerCompleted=false
+        }, 1000);
+      }
 
     } else {
+      if(!this.isAnswerCompleted){
+        this.isAnswerCompleted=true
+      this.points -= 10;
       setTimeout(() => {
         this.currentQuestion++;
         this.inCorrectAnswer++;
         this.resetCounter();
         this.getProgressPercent();
-      }, 1000);
+        this.isAnswerCompleted=false
 
-      this.points -= 10;
+      }, 1000);
+    }
+
     }
   }
   startCounter() {
