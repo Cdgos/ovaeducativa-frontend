@@ -22,6 +22,7 @@ import { LandingComponent } from "./views/landing/landing.component";
 import { ProfileComponent } from "./views/profile/profile.component";
 import { EstudianteComponent } from './layouts/estudiante/estudiante.component';
 import { TemaComponent } from './views/tema/tema.component';
+=======
 
 const routes: Routes = [
   // admin views
